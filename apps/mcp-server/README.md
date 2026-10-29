@@ -13,6 +13,8 @@ The local endpoints are:
 - Health: `http://localhost:8787/health`
 - MCP: `http://localhost:8787/mcp`
 
+The server exposes a `threadline-investigation` prompt to guide the connected-app search and a `render_investigation` tool to display the final result.
+
 The MCP endpoint is not a browser page. It accepts JSON-RPC `POST` requests. Verify the handshake with:
 
 ```bash

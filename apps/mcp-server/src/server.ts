@@ -30,6 +30,22 @@ function createServer() {
     }],
   }));
 
+  server.registerPrompt("threadline-investigation", {
+    description: "Guide ChatGPT through a customer investigation using connected Slack, Jira, and Confluence apps before rendering Threadline.",
+    argsSchema: {
+      customer: z.string().describe("Customer or account name"),
+      question: z.string().describe("Customer problem to investigate"),
+    },
+  }, async ({ customer, question }) => ({
+    messages: [{
+      role: "user",
+      content: {
+        type: "text",
+        text: `Investigate ${customer}: ${question}\n\nFirst search the connected Slack, Jira, and Confluence apps for relevant history. Reconcile the results and separate confirmed facts, unknowns, and conflicting information. Then call Threadline's render_investigation tool with the final plain-language summary, suggested next steps, and source evidence. Do not invent records or imply that an old workaround is still active without evidence.`,
+      },
+    }],
+  }));
+
   server.registerTool("render_investigation", {
     title: "Render Threadline investigation",
     description: "Render a Threadline investigation after gathering relevant evidence from connected Slack, Jira, and Confluence apps. Use only evidence returned by those sources. Clearly preserve unknowns and conflicting information; never invent source records.",
