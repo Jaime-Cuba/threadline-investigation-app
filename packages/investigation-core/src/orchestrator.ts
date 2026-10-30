@@ -1,4 +1,4 @@
-import { Evidence, InvestigationInput, InvestigationSource, SourceName, SourceStatus } from "./types";
+import { Evidence, EvidenceKind, InvestigationInput, InvestigationSource, SourceName, SourceStatus } from "./types";
 
 export type SourceRun = {
   source: InvestigationSource;
@@ -7,13 +7,34 @@ export type SourceRun = {
   error?: string;
 };
 
+function errorMessage(source: InvestigationSource, error: unknown) {
+  // Deliberately do not echo provider details. They may contain URLs, tokens,
+  // or implementation details that are not useful to a customer-facing user.
+  void error;
+  return `${source.displayName} search failed.`;
+}
+
+function isEvidence(value: unknown, sourceName: SourceName): value is Evidence {
+  if (!value || typeof value !== "object") return false;
+  const item = value as Partial<Evidence>;
+  const kinds: EvidenceKind[] = ["discussion", "ticket", "documentation", "custom_work"];
+  return typeof item.id === "string" && item.source === sourceName &&
+    typeof item.kind === "string" && kinds.includes(item.kind as EvidenceKind) && typeof item.title === "string" &&
+    typeof item.excerpt === "string" && typeof item.relevance === "string" &&
+    ["high", "medium", "low"].includes(item.relevance) &&
+    typeof item.timestamp === "string" && typeof item.whyItMatters === "string";
+}
+
 export async function runSources(input: InvestigationInput, sources: InvestigationSource[]): Promise<SourceRun[]> {
   return Promise.all(sources.map(async (source) => {
     try {
-      const evidence = await source.search(input);
+      const result = await source.search(input);
+      if (!Array.isArray(result)) throw new Error("adapter returned a non-array result");
+      const evidence = result.filter((item) => isEvidence(item, source.name));
+      if (evidence.length !== result.length) throw new Error("adapter returned malformed evidence");
       return { source, evidence, status: evidence.length > 0 ? source.status : "no_results" };
-    } catch {
-      return { source, evidence: [], status: "error", error: `The ${source.displayName} source could not be searched.` };
+    } catch (error) {
+      return { source, evidence: [], status: "error", error: errorMessage(source, error) };
     }
   }));
 }
@@ -35,7 +56,7 @@ export function buildSourceStatus(runs: SourceRun[]) {
   const sourceStatus = runs.reduce<Record<SourceName, SourceStatus>>((status, run) => {
     status[run.source.name] = run.status;
     return status;
-  }, { slack: "no_results", jira: "no_results", confluence: "no_results" });
+  }, { slack: "no_results", jira: "no_results", zendesk: "no_results", confluence: "no_results" });
   const sourceErrors = runs.reduce<Partial<Record<SourceName, string>>>((errors, run) => {
     if (run.error) errors[run.source.name] = run.error;
     return errors;

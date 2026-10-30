@@ -1,4 +1,4 @@
-export type SourceName = "slack" | "jira" | "confluence";
+export type SourceName = "slack" | "jira" | "zendesk" | "confluence";
 
 export type SourceStatus = "fixture" | "planned" | "no_results" | "error";
 

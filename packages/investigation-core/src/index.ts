@@ -1,12 +1,14 @@
-import { fixtureConfluenceSource, fixtureJiraSource, fixtureSlackSource } from "./sources";
+import { fixtureConfluenceSource, fixtureJiraSource, fixtureSlackSource, fixtureZendeskSource } from "./sources";
 import { buildSourceStatus, normalizeEvidence, runSources } from "./orchestrator";
 import { Evidence, InvestigationInput, InvestigationOptions, InvestigationResult, InvestigationSource, SourceName } from "./types";
 
 export * from "./types";
+export * from "./import";
 
 const sourceRegistry: Record<SourceName, InvestigationSource> = {
   slack: fixtureSlackSource,
   jira: fixtureJiraSource,
+  zendesk: fixtureZendeskSource,
   confluence: fixtureConfluenceSource,
 };
 

@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "latest",
-    "@threadline/core": "0.1.0",
     "zod": "latest"
   },
   "devDependencies": {
