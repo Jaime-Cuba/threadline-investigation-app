@@ -6,7 +6,7 @@
   "workspaces": ["apps/*", "packages/*"],
   "scripts": {
     "dev": "npm run dev --workspace @threadline/web",
-    "build": "npm run build --workspace @threadline/web",
-    "typecheck": "npm run typecheck --workspace @threadline/web && npm run typecheck --workspace @threadline/core"
+    "build": "npm run build --workspace @threadline/web && npm run build --workspace @threadline/mcp-server",
+    "typecheck": "npm run typecheck --workspace @threadline/web && npm run typecheck --workspace @threadline/core && npm run typecheck --workspace @threadline/mcp-server"
   }
 }

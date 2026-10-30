@@ -1,0 +1,45 @@
+Investigate this customer issue and create a JSON file for Threadline.
+
+Customer/account: [CUSTOMER]
+Problem: [DESCRIBE THE ISSUE]
+
+Search the connected Slack, Jira, and Confluence apps for relevant history. Reconcile the results. Separate confirmed facts from unknowns, conflicts, and assumptions. Treat old workarounds as historical unless current evidence confirms they are active. Do not invent records.
+
+Return only valid JSON with this exact shape. Save it as threadline-investigation.json:
+
+{
+  "schemaVersion": "1.0",
+  "customer": "Customer name",
+  "question": "Original investigation question",
+  "generatedAt": "2026-10-30T00:00:00.000Z",
+  "summary": "A clear plain-language summary for a technical or non-technical teammate.",
+  "knownFacts": ["Confirmed fact supported by evidence"],
+  "unclearItems": ["Unknown, conflicting, or unverified item"],
+  "suggestedNextSteps": ["Specific next action"],
+  "evidence": [
+    {
+      "id": "stable-source-record-id",
+      "source": "slack",
+      "kind": "discussion",
+      "title": "Source record title",
+      "excerpt": "Short excerpt or faithful summary",
+      "relevance": "high",
+      "status": "Open",
+      "author": "Author if available",
+      "timestamp": "2026-10-30",
+      "url": "https://source-record-link-if-available",
+      "whyItMatters": "Why this record matters to the current investigation"
+    }
+  ],
+  "sources": [
+    {"name": "Slack", "status": "fixture"},
+    {"name": "Jira", "status": "fixture"},
+    {"name": "Zendesk", "status": "fixture"},
+    {"name": "Confluence", "status": "fixture"}
+  ]
+}
+
+Allowed evidence source values: slack, jira, zendesk, confluence.
+Allowed evidence kind values: discussion, ticket, documentation, custom_work.
+Allowed relevance values: high, medium, low.
+Allowed source status values: fixture, planned, no_results, error.
