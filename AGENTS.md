@@ -1,4 +1,4 @@
-# Threadline project guidance
+# Headstart project guidance
 
 ## Project
 
@@ -18,6 +18,37 @@
 - **Make uncertainty visible.** Never treat a closed ticket, old workaround, or missing source as proof that a problem is resolved.
 - **Use reversible decisions.** Prefer code that can be replaced or extended without migrating a large system.
 - **Clarity beats cleverness.** Use direct names, small functions, explicit types, and comments only where they explain a non-obvious decision.
+
+## Modularity and evolution
+
+Headstart is intentionally a small v1, but it should be able to grow into a
+larger product without a rewrite. Build for change through clear boundaries,
+not through speculative frameworks.
+
+- **One responsibility per module.** Keep retrieval, normalization, reasoning,
+  transport, and presentation separate. A source adapter should not know how
+  the UI renders an evidence record.
+- **Contracts before integrations.** Define or update the typed contract first,
+  then implement adapters against it. Keep provider-specific fields at the
+  adapter boundary and expose only normalized domain data to the core.
+- **Compose instead of branching.** Add a new source, audience, or delivery
+  surface by registering a focused module or composing existing functions—not
+  by adding provider-specific conditionals throughout the application.
+- **Keep extension points small.** Prefer a narrow interface, registry, or
+  strategy over a general-purpose framework. Every abstraction must have a
+  current caller or a clear near-term use.
+- **Keep the core independent of delivery surfaces.** The same investigation
+  result must be usable by the web UI, an MCP app, a Slack workflow, or a CLI
+  without changing its meaning.
+- **Prefer additive evolution.** When the result shape changes, preserve
+  backward compatibility where practical, document the version, and provide a
+  safe fallback for older fixtures or clients.
+- **Make change local.** A new feature should have an obvious home and a small
+  diff. If a change requires touching many unrelated files, stop and improve
+  the boundary before continuing.
+- **Delete before generalizing.** Remove duplicated or obsolete code before
+  introducing a shared abstraction. Do not build phase-two infrastructure in
+  v1 just because it might be useful later.
 
 ## Working rules
 
