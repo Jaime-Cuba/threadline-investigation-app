@@ -58,6 +58,7 @@ not through speculative frameworks.
 - Preserve existing behavior unless the request explicitly changes it.
 - Make reasonable assumptions when they are low-risk. Surface a decision first when different answers would materially change the implementation.
 - Do not invent APIs, connector capabilities, requirements, or test results. Verify them in the repository or authoritative documentation.
+- For a major spec, plan, API/core change, connector, auth change, or pull request, use the project-local `skills/headstart-senior-reviewer/SKILL.md` before declaring the work ready. Focus the review on correctness, evidence, access, failure behavior, and maintainability; do not use it as a style gate.
 
 ## Public-demo safety
 
