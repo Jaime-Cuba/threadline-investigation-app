@@ -1,5 +1,5 @@
-import HeadstartWorkspace from "./components/headstart-workspace";
+import FullV2Page from "./design-study/v2/page";
 
 export default function HomePage() {
-  return <HeadstartWorkspace />;
+  return <FullV2Page />;
 }

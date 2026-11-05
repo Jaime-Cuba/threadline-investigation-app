@@ -46,7 +46,6 @@ export default function FullV2Page() {
   function notify(message: string) { setToast(message); window.setTimeout(() => setToast(null), 2200); }
 
   return <main className={styles.page}>
-    <header className={styles.studyHeader}><div><span className={styles.kicker}>Headstart · product study V2</span><h1>Investigation workspace</h1></div><p>A complete clickable flow combining the current app with the proposed Technical diagnostic view.</p></header>
     <section className={styles.app}>
       <aside className={styles.rail}><div className={styles.logo}>h<span>·</span></div><Rail icon="⌂" label="Cases" active={view === "cases"} onClick={() => setView("cases")} /><Rail icon="⌕" label="Search" active={view === "search"} onClick={() => setView("search")} /><Rail icon="⚙" label="Settings" active={view === "settings"} onClick={() => setView("settings")} /><button className={styles.railPlus} type="button" onClick={() => setShowNew(true)}>＋</button><span className={styles.avatar}>JC</span></aside>
       <div className={styles.appMain}>
